@@ -1,0 +1,14 @@
+#端口号
+server:
+  port: 8081
+spring:
+  application:
+  name: "mqtt-server"
+  mqtt:
+    username: "admin"
+    password: "admin123"
+    url: "tcp://127.0.0.1:1883"
+    topic: "iot/mqtt/the/first"
+    completionTimeout: "3000"
+    client:
+      id: "mqttId"
