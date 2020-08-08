@@ -7,7 +7,7 @@ spring:
   mqtt:
     username: "admin"
     password: "admin123"
-    url: "tcp://127.0.0.1:1883"
+    url: "tcp://127.0.0.1:1883" #可配置多个
     topic: "iot/mqtt/the/first"
     completionTimeout: "3000"
     client:

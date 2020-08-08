@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MqttConfigBean {
+public class MqttConfig {
     @Value("${spring.mqtt.username}")
     private String username;
 

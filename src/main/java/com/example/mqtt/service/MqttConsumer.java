@@ -1,6 +1,6 @@
 package com.example.mqtt.service;
 
-import com.example.mqtt.config.MqttConfigBean;
+import com.example.mqtt.config.MqttConfig;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -17,16 +17,13 @@ import org.springframework.stereotype.Component;
 public class MqttConsumer implements ApplicationRunner {
 
     private static Logger logger= LoggerFactory.getLogger(MqttConsumer.class);
-
     private static MqttClient client;
-
     private static MqttTopic mqttTopic;
-
     /**
      * MQTT连接属性配置对象
      */
     @Autowired
-    public MqttConfigBean mqttCofigBean;
+    public MqttConfig mqttConfig;
 
     /**
      * 初始化参数配置
@@ -41,18 +38,18 @@ public class MqttConsumer implements ApplicationRunner {
      *  用来连接服务器
      */
     private void connect() throws Exception{
-        client = new MqttClient(mqttCofigBean.getHostUrl(),mqttCofigBean.getClientId(), new MemoryPersistence());
+        client = new MqttClient(mqttConfig.getHostUrl(),mqttConfig.getClientId(), new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
         options.setCleanSession(false);
-        options.setUserName(mqttCofigBean.getUsername());
-        options.setPassword(mqttCofigBean.getPassword().toCharArray());
+        options.setUserName(mqttConfig.getUsername());
+        options.setPassword(mqttConfig.getPassword().toCharArray());
         options.setCleanSession(false);   //是否清除session
         // 设置超时时间
         options.setConnectionTimeout(30);
         // 设置会话心跳时间
         options.setKeepAliveInterval(20);
         try {
-            String[] msgtopic = mqttCofigBean.getMsgTopic();
+            String[] msgtopic = mqttConfig.getMsgTopic();
             //订阅消息
             int[] qos = new int[msgtopic.length];
             for (int i = 0; i < msgtopic.length; i++) {
@@ -61,7 +58,7 @@ public class MqttConsumer implements ApplicationRunner {
             client.setCallback(new TopMsgCallback(client,options,msgtopic,qos));
             client.connect(options);
             client.subscribe(msgtopic,qos);
-            logger.info("MQTT连接成功:"+mqttCofigBean.getClientId()+":"+client);
+            logger.info("MQTT连接成功:"+mqttConfig.getClientId()+":"+client);
         } catch (Exception e) {
             logger.error("MQTT连接异常："+e);
         }
