@@ -11,4 +11,5 @@ spring:
     topic: "iot/mqtt/the/first"
     completionTimeout: "3000"
     client:
-      id: "mqttId"
+      id-consumer: "mqttId-consumer"#订阅和发布不能使用相同的id
+      id-product: "mqttId-product"

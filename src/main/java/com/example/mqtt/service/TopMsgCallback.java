@@ -56,7 +56,7 @@ public class TopMsgCallback implements MqttCallback {
         //订阅消息字符
         String msg=new String(message.getPayload());
         byte[] bymsg=getBytesFromObject(msg);
-        logger.info("topic:"+topic);
+        logger.info("topic:"+topic[0]);
         logger.info("msg:"+msg);
 
     }

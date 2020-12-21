@@ -13,6 +13,13 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ *消费  订阅
+ *@description:
+ *@author: x.zaft
+ *@Date 2020/8/13
+ *@Version V1.0
+ */
 @Component
 public class MqttConsumer implements ApplicationRunner {
 
@@ -34,11 +41,11 @@ public class MqttConsumer implements ApplicationRunner {
         this.connect();
     }
 
-    /**
+    /**x`
      *  用来连接服务器
      */
     private void connect() throws Exception{
-        client = new MqttClient(mqttConfig.getHostUrl(),mqttConfig.getClientId(), new MemoryPersistence());
+        client = new MqttClient(mqttConfig.getHostUrl(),mqttConfig.getClientIdConsumer(), new MemoryPersistence());
         MqttConnectOptions options = new MqttConnectOptions();
         options.setCleanSession(false);
         options.setUserName(mqttConfig.getUsername());
@@ -58,7 +65,7 @@ public class MqttConsumer implements ApplicationRunner {
             client.setCallback(new TopMsgCallback(client,options,msgtopic,qos));
             client.connect(options);
             client.subscribe(msgtopic,qos);
-            logger.info("MQTT连接成功:"+mqttConfig.getClientId()+":"+client);
+            logger.info("MQTT连接成功:"+mqttConfig.getClientIdConsumer()+":"+client);
         } catch (Exception e) {
             logger.error("MQTT连接异常："+e);
         }
@@ -88,19 +95,4 @@ public class MqttConsumer implements ApplicationRunner {
         }
     }
 
-    public MqttClient getClient() {
-        return client;
-    }
-
-    public void setClient(MqttClient client) {
-        this.client = client;
-    }
-
-    public MqttTopic getMqttTopic() {
-        return mqttTopic;
-    }
-
-    public void setMqttTopic(MqttTopic mqttTopic) {
-        this.mqttTopic = mqttTopic;
-    }
 }
